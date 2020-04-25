@@ -108,11 +108,11 @@ public:
 		if (other.data == this->data)
 			return *this;
 
-		//++other.counter;
+		++(*other.counter);
 
 		this->data = other.data;
 
-		this->counter = other.counter + 1;
+		this->counter = other.counter;
 
 		return *this;
 	}
@@ -140,13 +140,13 @@ public:
 
 private:
 	T * data;
-	int counter; // shared_ptr icin
+	int* counter; // shared_ptr icin
 };
 
 template<class T>
 class SharedPtr<T[]> {
 public:
-	SharedPtr(T * ptr) :data(ptr), originalAddress(ptr), counter(1) {}
+	SharedPtr(T * ptr) :data(ptr), originalAddress(ptr), counter(new int{1}) {}
 
 	SharedPtr(SharedPtr<T> & other)
 	{
@@ -158,13 +158,13 @@ public:
 		if (other.data == this->data)
 			return *this;
 
-		//++other.counter;
+		++(*other.counter);
 
 		this->originalAddress = other.originalAddress;
 
 		this->data = other.data;
 
-		this->counter = other.counter + 1;
+		this->counter = other.counter;
 
 		return *this;
 	}
@@ -210,7 +210,7 @@ public:
 
 private:
 	T * data, *originalAddress;
-	int counter; // shared_ptr icin
+	int* counter; // shared_ptr icin
 };
 
 int main()
