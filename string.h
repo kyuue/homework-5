@@ -12,8 +12,6 @@ namespace lib
 	class wstring 
 	{
 	public:
-		static constexpr int MAX_SIZE = 128;
-
 		wstring();
 
 		wstring(const wchar_t* str);
