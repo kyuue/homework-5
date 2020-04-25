@@ -155,9 +155,35 @@ std::wistream & lib::operator>>(std::wistream & i, wstring & str)
 	
 	wchar_t*& ptr = str.get();
 
-	ptr = new wchar_t[lib::wstring::MAX_SIZE]; // hard coded, 
+	int currentSize = 4;
 
-	std::wcin >> ptr;
+	ptr = new wchar_t[currentSize];
+
+	//std::wcin >> ptr;
+
+	int curIndex = 0;
+
+	while (true)
+	{
+		if (curIndex + 1 >= currentSize)
+		{
+			currentSize += currentSize / 2;
+
+			auto newPtr = new wchar_t[currentSize];
+			
+			memcpy(newPtr, ptr, (curIndex+1) * sizeof(wchar_t) - 1);
+
+			delete[] ptr;
+
+			ptr = newPtr;
+		}
+
+		ptr[curIndex++] = i.get();
+
+		if (i.peek() == '\n' || i.peek() == EOF || i.peek() == NULL)
+			break;
+	}
+
 
 	str.len = wcslen(ptr);
 
